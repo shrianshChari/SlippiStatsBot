@@ -15,6 +15,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - [x] Add license
 - [ ] Potentially implement userinfo command (?)
 - [ ] Finish this readme file with contact information, command information, table of contents, libraries used
+- [ ] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell
 
 ### Development
 - `git clone` this repository and navigate into it
