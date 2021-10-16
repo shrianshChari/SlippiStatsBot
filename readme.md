@@ -3,8 +3,12 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 
 ### TODO
 - [ ] Implement SLP replay analysis (should activate upon the bot being mentioned)
+	- [ ] Get players' names (not connection codes), characters, stage, game length, date and time, and platform (console vs dolphin)
+	- [ ] Determine the number of kills each player had, final stock count at the end of the game
+	- [ ] Figure out custom stock emojis to display final stock count
+	- [ ] Design final layout of embed to be used
 - [ ] Create an about command that describes information about the bot
-- [ ] Add license
+- [x] Add license
 - [ ] Potentially implement userinfo command (?)
 - [ ] Finish this readme file with contact information, command information, table of contents, libraries used
 
@@ -14,6 +18,5 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - `npm run build`
 - `set BOT_TOKEN=<your bot token>` on Windows or `export BOT_TOKEN=<your bot token>` on UNIX, if you don't have token yet than create one at [discord developer portal](https://discord.com/developers/)
 - `npm run start`
-
 you are done, you will see your bot up and running. For detailed installation guide, please [see this](https://oceanroleplay.github.io/discord.ts/docs/installation)
 

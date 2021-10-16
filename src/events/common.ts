@@ -1,6 +1,6 @@
 import {MessageAttachment} from "discord.js";
 import { Discord, On, Client, ArgsOf } from "discordx";
-
+import { SlippiGame } from "@slippi/slippi-js";
 
 @Discord()
 export abstract class AppDiscord {
@@ -21,12 +21,12 @@ export abstract class AppDiscord {
       if (!attatchment.name) return;
 
       let filename = attatchment.name;
-      console.log(filename);
       if (filename.length < 4) return;
-      console.log(filename.substring(filename.length - 4, filename.length));
       if (filename.substring(filename.length - 4, filename.length) === ".slp") {
         // Run slippi analysis
         console.log(`Conducting analysis on ${filename}`);
+        let game = new SlippiGame(filename);
+        // TODO: Continue SlippiGame analysis
         return;
       }
     });
