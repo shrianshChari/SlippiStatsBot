@@ -1,7 +1,7 @@
 {
-  "name": "discord.ts-example",
-  "version": "1.0.0",
-  "description": "",
+  "name": "slippistatsbot",
+  "version": "0.0.1",
+  "description": "Discord bot that analyses Slippi replay files and returns stats.",
   "main": "build/client.js",
   "scripts": {
     "build": "tsc",
@@ -10,7 +10,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/oceanroleplay/discord.ts-example.git"
+    "url": "git+https://github.com/shrianshChari/SlippiStatsBot.git"
   },
   "keywords": [
     "discordx",
@@ -20,12 +20,12 @@
     "discord",
     "typescript"
   ],
-  "author": "Indian Ocean Roleplay",
-  "license": "MIT",
+  "author": "Shriansh Chari",
+  "license": "GPL-3.0-or-later",
   "bugs": {
-    "url": "https://github.com/oceanroleplay/discord.ts-example/issues"
+    "url": "https://github.com/shrianshChari/SlippiStatsBot/issues"
   },
-  "homepage": "https://github.com/oceanroleplay/discord.ts-example#readme",
+  "homepage": "https://github.com/shrianshChari/SlippiStatsBot#readme",
   "devDependencies": {
     "prettier": "^2.4.1",
     "typescript": "^4.4.4"
