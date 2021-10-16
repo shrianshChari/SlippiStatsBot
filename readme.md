@@ -6,7 +6,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - [ ] Create an about command that describes information about the bot
 - [ ] Add license
 - [ ] Potentially implement userinfo command (?)
-- [ ] Finish this readme file with contact information, command information, table of contents
+- [ ] Finish this readme file with contact information, command information, table of contents, libraries used
 
 ### Development
 - `git clone` this repository and navigate into it
