@@ -2,11 +2,11 @@
 A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discord.
 
 ### TODO
-- [  ] Implement SLP replay analysis (should activate upon the bot being mentioned)
-- [  ] Create an about command that describes information about the bot
-- [  ] Add license
-- [  ] Potentially implement userinfo command (?)
-- [  ] Finish this readme file with contact information, command information, table of contents
+- [ ] Implement SLP replay analysis (should activate upon the bot being mentioned)
+- [ ] Create an about command that describes information about the bot
+- [ ] Add license
+- [ ] Potentially implement userinfo command (?)
+- [ ] Finish this readme file with contact information, command information, table of contents
 
 ### Development
 - `git clone` this repository and navigate into it
