@@ -1,7 +1,7 @@
 {
   "name": "slippistatsbot",
   "version": "0.0.1",
-  "description": "Discord bot that analyses Slippi replay files and returns stats.",
+  "description": "Discord bot that analyses Slippi replay files and returns game stats.",
   "main": "build/client.js",
   "scripts": {
     "build": "tsc",
