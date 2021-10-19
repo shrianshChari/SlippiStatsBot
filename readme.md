@@ -21,7 +21,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - `git clone` this repository and navigate into it
 - `npm install`
 - `npm run build`
-- `set BOT_TOKEN=<your bot token>` on Windows or `export BOT_TOKEN=<your bot token>` on UNIX, if you don't have token yet than create one at [discord developer portal](https://discord.com/developers/)
+- `set BOT_TOKEN=<your bot token>` on Windows or `export BOT_TOKEN=<your bot token>` on UNIX. If you don't have token yet than create one at [discord developer portal](https://discord.com/developers/)
 - `npm run start`
 you are done, you will see your bot up and running. For detailed installation guide, please [see this](https://oceanroleplay.github.io/discord.ts/docs/installation)
 
