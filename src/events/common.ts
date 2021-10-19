@@ -1,9 +1,14 @@
-import {MessageAttachment} from "discord.js";
+import { MessageAttachment } from "discord.js";
 import { Discord, On, Client, ArgsOf } from "discordx";
+
 import { SlippiGame } from "@slippi/slippi-js";
 
-import fs from 'fs';
 import axios, {AxiosResponse} from "axios";
+
+import { table } from 'table';
+
+import fs from 'fs';
+import * as slpJSON from './slpJSON';
 
 @Discord()
 export abstract class AppDiscord {
@@ -13,13 +18,13 @@ export abstract class AppDiscord {
   }
 
   @On("messageCreate")
-  private onMessage([message]: ArgsOf<"messageCreate">, client: Client, guardPayload: any) {
+  private onMessage([message]: ArgsOf<"messageCreate">, client: Client) {
     if (!client.user) return; // If the bot user is null for some reason
     if (!message.mentions.has(client.user)) return; // Bot should be mentioned for analysis to start
     if (!message.attachments) return; // @ message should contain an attachment
 
     // Looping through collection of attachments (even though each message can only have one)
-    message.attachments.forEach((attachment, key, map) => {
+    message.attachments.forEach((attachment, map) => {
       if (!attachment) return;
       if (!attachment.name) return;
 
@@ -29,8 +34,6 @@ export abstract class AppDiscord {
         // Run slippi analysis
         console.log(`Conducting analysis on ${filename}`);
 
-        let localFileName = `slpFile/${filename}`;
-
         let game: SlippiGame;
 
         const response = axios.get(attachment.url,  { responseType: 'arraybuffer' })
@@ -39,33 +42,107 @@ export abstract class AppDiscord {
             game = new SlippiGame(value.data);
 
             if (game == null) {
-              fs.rmSync(localFileName);
-              console.log(`game == null, ${localFileName} deleted!`);
+              console.log("Game is null!")
               return;
             }
 
-            console.log(game);
-
-            // let metadata = game.getMetadata();
-            // if (metadata == null) return;
-
-            let settings;
-
-            try {
-              settings = game.getSettings();
-
-              if (settings == null) {
-                fs.rmSync(localFileName);
-                console.log(`settings == null, ${localFileName} deleted!`);
-                return;
-              }
-
-
-            } catch (err) {
-
+            let data = slpJSON.getDataFromSLP(game);
+            if (data == null) {
+              console.log('data is null!');
+              return;
             }
 
-            console.log(settings);
+            // Cleaning up percentages and ratios for output
+            data.player1.overall.totalDamage = Math.round(10 * data.player1.overall.totalDamage) / 10;
+            data.player2.overall.totalDamage = Math.round(10 * data.player2.overall.totalDamage) / 10;
+
+            if (data.player1.overall.successfulConversions.ratio == null) {
+              data.player1.overall.successfulConversions.ratio = 0
+            }
+            if (data.player2.overall.successfulConversions.ratio == null) {
+              data.player2.overall.successfulConversions.ratio = 0
+            }
+
+            data.player1.overall.successfulConversions.ratio = Math.round(10000 * data.player1.overall.successfulConversions.ratio) 
+            / 100
+            data.player2.overall.successfulConversions.ratio = Math.round(10000 * data.player2.overall.successfulConversions.ratio) 
+            / 100
+
+            if (data.player1.overall.openingsPerKill.ratio == null) {
+              data.player1.overall.openingsPerKill.ratio = 0
+            }
+            if (data.player2.overall.openingsPerKill.ratio == null) {
+              data.player2.overall.openingsPerKill.ratio = 0
+            }
+
+            data.player1.overall.openingsPerKill.ratio = Math.round(100 * data.player1.overall.openingsPerKill.ratio) / 100
+            data.player2.overall.openingsPerKill.ratio = Math.round(100 * data.player2.overall.openingsPerKill.ratio) / 100
+
+            if (data.player1.overall.damagePerOpening.ratio == null) {
+              data.player1.overall.damagePerOpening.ratio = 0
+            }
+            if (data.player2.overall.damagePerOpening.ratio == null) {
+              data.player2.overall.damagePerOpening.ratio = 0
+            }
+
+            data.player1.overall.damagePerOpening.ratio = Math.round(100 * data.player1.overall.damagePerOpening.ratio) / 100
+            data.player2.overall.damagePerOpening.ratio = Math.round(100 * data.player2.overall.damagePerOpening.ratio) / 100
+
+            if (data.player1.overall.inputsPerMinute.ratio == null) {
+              data.player1.overall.inputsPerMinute.ratio = 0
+            }
+            data.player1.overall.inputsPerMinute.ratio = Math.round(100 * data.player1.overall.inputsPerMinute.ratio) / 100
+
+            if (data.player2.overall.inputsPerMinute.ratio == null) {
+              data.player2.overall.inputsPerMinute.ratio = 0
+            }
+            data.player2.overall.inputsPerMinute.ratio = Math.round(100 * data.player2.overall.inputsPerMinute.ratio) / 100
+
+            if (data.player1.overall.digitalInputsPerMinute.ratio == null) {
+              data.player1.overall.digitalInputsPerMinute.ratio = 0
+            }
+            data.player1.overall.digitalInputsPerMinute.ratio = Math.round(100 * data.player1.overall.digitalInputsPerMinute.ratio) / 100
+
+            if (data.player2.overall.digitalInputsPerMinute.ratio == null) {
+              data.player2.overall.digitalInputsPerMinute.ratio = 0
+            }
+            data.player2.overall.digitalInputsPerMinute.ratio = Math.round(100 * data.player2.overall.digitalInputsPerMinute.ratio) / 100
+
+
+            let tableData = [
+
+              ["", data.player1.name, data.player2.name],
+              ["Offense", "", ""],
+              ["Kills", data.player1.overall.killCount, data.player2.overall.killCount],
+              ["Damage Done", data.player1.overall.totalDamage, data.player2.overall.totalDamage],
+              ["Opening Conversion Rate", `${data.player1.overall.successfulConversions.ratio}%`, `${data.player2.overall.successfulConversions.ratio}%`],
+              ["Openings / Kill", data.player1.overall.openingsPerKill.ratio, data.player2.overall.openingsPerKill.ratio],
+              ["Damage / Opening", data.player1.overall.damagePerOpening.ratio, data.player2.overall.damagePerOpening.ratio],
+
+              ["Defense", "", ""],
+              ["Rolls / Air Dodge / Spot Dodge", 
+                `${data.player1.actionCounts.rollCount} / ${data.player1.actionCounts.airDodgeCount} / ${data.player1.actionCounts.spotDodgeCount}`, 
+                `${data.player2.actionCounts.rollCount} / ${data.player2.actionCounts.airDodgeCount} / ${data.player2.actionCounts.spotDodgeCount}`],
+
+                ["Neutral", "", ""],
+                ["Neutral Wins", data.player1.overall.neutralWinRatio.count, data.player2.overall.neutralWinRatio.count],
+                ["Counter Hits", data.player1.overall.counterHitRatio.count, data.player2.overall.counterHitRatio.count],
+                ["Beneficial Trades", data.player1.overall.beneficialTradeRatio.count, data.player2.overall.beneficialTradeRatio.count],
+                ["Wavedash / Waveland / Dash Dance / Ledgegrab", 
+                  `${data.player1.actionCounts.wavedashCount} / ${data.player1.actionCounts.wavelandCount} / ${data.player1.actionCounts.dashDanceCount} / ${data.player1.actionCounts.ledgegrabCount}`,
+                  `${data.player2.actionCounts.wavedashCount} / ${data.player2.actionCounts.wavelandCount} / ${data.player2.actionCounts.dashDanceCount} / ${data.player2.actionCounts.ledgegrabCount}`
+                ],
+
+                ["General", "", ""],
+                ["Inputs / Minute", data.player1.overall.inputsPerMinute.ratio, data.player2.overall.inputsPerMinute.ratio],
+                ["Digital Inputs / Minute", data.player1.overall.digitalInputsPerMinute.ratio, data.player2.overall.digitalInputsPerMinute.ratio],
+                ["L-Cancel Success Rate", 
+                  `${data.player1.actionCounts.lCancelCount.success} / ${data.player1.actionCounts.lCancelCount.fail + data.player1.actionCounts.lCancelCount.success}`,
+                  `${data.player2.actionCounts.lCancelCount.success} / ${data.player2.actionCounts.lCancelCount.fail + data.player2.actionCounts.lCancelCount.success}`
+                ]
+            ];
+
+            console.log(table(tableData));
 
             /*
 
@@ -104,8 +181,6 @@ player2.name = "Player 2";
 
 let information = {};
              */
-            // fs.rmSync(localFileName);
-            console.log(`${localFileName} deleted!`);
             return;
           } else {
             console.log("Value.data is not a Buffer!");
