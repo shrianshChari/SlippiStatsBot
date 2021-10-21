@@ -5,6 +5,7 @@ export interface SlippiData {
     stage: string
     numPlayers: number
     isTeams: boolean
+    platform: string
   }
   player1: Player
   player2: Player
@@ -17,6 +18,7 @@ export interface Player {
   colorId: number | null
   overall: OverallType // TODO: implement game and player statistics using getStats().OverallType and getStats.ActionType
   actionCounts: ActionCountsType
+  finalStockCount: number
 }
 
 export function getDataFromSLP(slpGame: SlippiGame): SlippiData | null {
@@ -33,6 +35,25 @@ export function getDataFromSLP(slpGame: SlippiGame): SlippiData | null {
   let settings = slpGame.getSettings()
   if (settings == null) return null;
 
+  let latestFrame = slpGame.getLatestFrame()
+  if (latestFrame == null) return null;
+
+  // Setting up stocksRemaining
+
+  let stocksRemaining: number[] = []
+
+  if (!(latestFrame.players[0]) || !(latestFrame.players[0].post) || !(latestFrame.players[0].post.stocksRemaining)) {
+    stocksRemaining.push(0)
+  } else {
+    stocksRemaining.push(latestFrame.players[0].post.stocksRemaining)
+  }
+   
+if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame.players[1].post.stocksRemaining)) {
+    stocksRemaining.push(0)
+  } else {
+    stocksRemaining.push(latestFrame.players[1].post.stocksRemaining)
+  }
+
   let player1: Player = {
     name: getNameFromPlayer(settings.players[0]),
     playerIndex: settings.players[0].playerIndex,
@@ -40,6 +61,7 @@ export function getDataFromSLP(slpGame: SlippiGame): SlippiData | null {
     character: getCharFromID(settings.players[0].characterId),
     overall: stats.overall[0],
     actionCounts: stats.actionCounts[0],
+    finalStockCount: stocksRemaining[0]
   };
 
   let player2: Player = {
@@ -49,6 +71,7 @@ export function getDataFromSLP(slpGame: SlippiGame): SlippiData | null {
     character: getCharFromID(settings.players[1].characterId),
     overall: stats.overall[1],
     actionCounts: stats.actionCounts[1],
+    finalStockCount: stocksRemaining[1]
   };
 
   data = {
@@ -58,6 +81,7 @@ export function getDataFromSLP(slpGame: SlippiGame): SlippiData | null {
       stage: getStageFromId(settings.stageId),
       numPlayers: settings.players.length,
       isTeams: settings.isTeams ? settings.isTeams : false, // Accounts for if isTeams is null
+      platform: metadata.playedOn ? metadata.playedOn : ""
     }
   }
   return data;
