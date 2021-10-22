@@ -6,6 +6,8 @@ export interface SlippiData {
     numPlayers: number
     isTeams: boolean
     platform: string
+    startAt: Date | null
+    playableFrameCount: number
   }
   player1: Player
   player2: Player
@@ -15,7 +17,7 @@ export interface Player {
   name: string
   playerIndex: number
   character: string
-  colorId: number | null
+  colorId: number
   overall: OverallType // TODO: implement game and player statistics using getStats().OverallType and getStats.ActionType
   actionCounts: ActionCountsType
   finalStockCount: number
@@ -57,7 +59,7 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
   let player1: Player = {
     name: getNameFromPlayer(settings.players[0]),
     playerIndex: settings.players[0].playerIndex,
-    colorId: settings.players[0].characterColor,
+    colorId: settings.players[0].characterColor ? settings.players[0].characterColor : 0,
     character: getCharFromID(settings.players[0].characterId),
     overall: stats.overall[0],
     actionCounts: stats.actionCounts[0],
@@ -67,12 +69,17 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
   let player2: Player = {
     name: getNameFromPlayer(settings.players[1]),
     playerIndex: settings.players[1].playerIndex,
-    colorId: settings.players[1].characterColor,
+    colorId: settings.players[1].characterColor ? settings.players[1].characterColor : 0,
     character: getCharFromID(settings.players[1].characterId),
     overall: stats.overall[1],
     actionCounts: stats.actionCounts[1],
     finalStockCount: stocksRemaining[1]
   };
+
+  // Cleaning up undefined though it really shouldn't matter
+  if (metadata.startAt == undefined) {
+    metadata.startAt = null
+  }
 
   data = {
     player1: player1,
@@ -81,7 +88,9 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
       stage: getStageFromId(settings.stageId),
       numPlayers: settings.players.length,
       isTeams: settings.isTeams ? settings.isTeams : false, // Accounts for if isTeams is null
-      platform: metadata.playedOn ? metadata.playedOn : ""
+      platform: metadata.playedOn ? metadata.playedOn : "",
+      startAt: metadata.startAt ? new Date(metadata.startAt) : null,
+      playableFrameCount: stats.playableFrameCount
     }
   }
   return data;

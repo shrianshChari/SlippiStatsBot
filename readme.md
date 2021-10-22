@@ -3,8 +3,8 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 
 ### TODO
 - [ ] Implement SLP replay analysis (should activate upon the bot being mentioned)
-	- [ ] Get players' names (not connection codes), characters, stage, game length, date and time, and platform (console vs dolphin)
-	- [ ] Determine the number of kills each player had, final stock count at the end of the game
+	- [x] Get players' names (not connection codes), characters, stage, game length, date and time, and platform (console vs dolphin)
+	- [x] Determine the number of kills each player had, final stock count at the end of the game
 	- [ ] Figure out custom stock emojis to display final stock count
 	- [ ] Design final layout of embed to be used
 	- [ ] Flags/arguments to include/not include certain stages
