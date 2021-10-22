@@ -1,4 +1,4 @@
-import { MessageAttachment } from "discord.js";
+import { MessageAttachment, MessageEmbed } from "discord.js";
 import { Discord, On, Client, ArgsOf } from "discordx";
 
 import { SlippiGame } from "@slippi/slippi-js";
@@ -85,65 +85,66 @@ export abstract class AppDiscord {
               data.player2.overall.damagePerOpening.ratio = 0
             }
 
-            data.player1.overall.damagePerOpening.ratio = Math.round(100 * data.player1.overall.damagePerOpening.ratio) / 100
-            data.player2.overall.damagePerOpening.ratio = Math.round(100 * data.player2.overall.damagePerOpening.ratio) / 100
+            data.player1.overall.damagePerOpening.ratio = Math.round(10 * data.player1.overall.damagePerOpening.ratio) / 10
+            data.player2.overall.damagePerOpening.ratio = Math.round(10 * data.player2.overall.damagePerOpening.ratio) / 10
 
             if (data.player1.overall.inputsPerMinute.ratio == null) {
               data.player1.overall.inputsPerMinute.ratio = 0
             }
-            data.player1.overall.inputsPerMinute.ratio = Math.round(100 * data.player1.overall.inputsPerMinute.ratio) / 100
+            data.player1.overall.inputsPerMinute.ratio = Math.round(10 * data.player1.overall.inputsPerMinute.ratio) / 10
 
             if (data.player2.overall.inputsPerMinute.ratio == null) {
               data.player2.overall.inputsPerMinute.ratio = 0
             }
-            data.player2.overall.inputsPerMinute.ratio = Math.round(100 * data.player2.overall.inputsPerMinute.ratio) / 100
+            data.player2.overall.inputsPerMinute.ratio = Math.round(10 * data.player2.overall.inputsPerMinute.ratio) / 10
 
             if (data.player1.overall.digitalInputsPerMinute.ratio == null) {
               data.player1.overall.digitalInputsPerMinute.ratio = 0
             }
-            data.player1.overall.digitalInputsPerMinute.ratio = Math.round(100 * data.player1.overall.digitalInputsPerMinute.ratio) / 100
+            data.player1.overall.digitalInputsPerMinute.ratio = Math.round(10 * data.player1.overall.digitalInputsPerMinute.ratio) / 10
 
             if (data.player2.overall.digitalInputsPerMinute.ratio == null) {
               data.player2.overall.digitalInputsPerMinute.ratio = 0
             }
-            data.player2.overall.digitalInputsPerMinute.ratio = Math.round(100 * data.player2.overall.digitalInputsPerMinute.ratio) / 100
+            data.player2.overall.digitalInputsPerMinute.ratio = Math.round(10 * data.player2.overall.digitalInputsPerMinute.ratio) / 10
 
 
             let tableData = [
 
               ["", data.player1.name, data.player2.name],
-              ["Offense", "", ""],
               ["Kills", data.player1.overall.killCount, data.player2.overall.killCount],
               ["Damage Done", data.player1.overall.totalDamage, data.player2.overall.totalDamage],
               ["Opening Conversion Rate", `${data.player1.overall.successfulConversions.ratio}%`, `${data.player2.overall.successfulConversions.ratio}%`],
               ["Openings / Kill", data.player1.overall.openingsPerKill.ratio, data.player2.overall.openingsPerKill.ratio],
               ["Damage / Opening", data.player1.overall.damagePerOpening.ratio, data.player2.overall.damagePerOpening.ratio],
 
-              ["Defense", "", ""],
-              ["Rolls / Air Dodge / Spot Dodge", 
-                `${data.player1.actionCounts.rollCount} / ${data.player1.actionCounts.airDodgeCount} / ${data.player1.actionCounts.spotDodgeCount}`, 
-                `${data.player2.actionCounts.rollCount} / ${data.player2.actionCounts.airDodgeCount} / ${data.player2.actionCounts.spotDodgeCount}`],
+              // ["Rolls / Air Dodge / Spot Dodge", 
+                // `${data.player1.actionCounts.rollCount} / ${data.player1.actionCounts.airDodgeCount} / ${data.player1.actionCounts.spotDodgeCount}`, 
+                // `${data.player2.actionCounts.rollCount} / ${data.player2.actionCounts.airDodgeCount} / ${data.player2.actionCounts.spotDodgeCount}`],
 
-                ["Neutral", "", ""],
-                ["Neutral Wins", data.player1.overall.neutralWinRatio.count, data.player2.overall.neutralWinRatio.count],
-                ["Counter Hits", data.player1.overall.counterHitRatio.count, data.player2.overall.counterHitRatio.count],
-                ["Beneficial Trades", data.player1.overall.beneficialTradeRatio.count, data.player2.overall.beneficialTradeRatio.count],
-                ["Wavedash / Waveland / Dash Dance / Ledgegrab", 
-                  `${data.player1.actionCounts.wavedashCount} / ${data.player1.actionCounts.wavelandCount} / ${data.player1.actionCounts.dashDanceCount} / ${data.player1.actionCounts.ledgegrabCount}`,
-                  `${data.player2.actionCounts.wavedashCount} / ${data.player2.actionCounts.wavelandCount} / ${data.player2.actionCounts.dashDanceCount} / ${data.player2.actionCounts.ledgegrabCount}`
-                ],
+              ["Neutral Wins", data.player1.overall.neutralWinRatio.count, data.player2.overall.neutralWinRatio.count],
+              ["Counter Hits", data.player1.overall.counterHitRatio.count, data.player2.overall.counterHitRatio.count],
+              ["Beneficial Trades", data.player1.overall.beneficialTradeRatio.count, data.player2.overall.beneficialTradeRatio.count],
+              // ["Wavedash / Waveland / Dash Dance / Ledgegrab", 
+                  // `${data.player1.actionCounts.wavedashCount} / ${data.player1.actionCounts.wavelandCount} / ${data.player1.actionCounts.dashDanceCount} / ${data.player1.actionCounts.ledgegrabCount}`,
+                  // `${data.player2.actionCounts.wavedashCount} / ${data.player2.actionCounts.wavelandCount} / ${data.player2.actionCounts.dashDanceCount} / ${data.player2.actionCounts.ledgegrabCount}`
+              // ],
 
-                ["General", "", ""],
-                ["Inputs / Minute", data.player1.overall.inputsPerMinute.ratio, data.player2.overall.inputsPerMinute.ratio],
-                ["Digital Inputs / Minute", data.player1.overall.digitalInputsPerMinute.ratio, data.player2.overall.digitalInputsPerMinute.ratio],
-                ["L-Cancel Success Rate", 
-                  `${data.player1.actionCounts.lCancelCount.success} / ${data.player1.actionCounts.lCancelCount.fail + data.player1.actionCounts.lCancelCount.success}`,
-                  `${data.player2.actionCounts.lCancelCount.success} / ${data.player2.actionCounts.lCancelCount.fail + data.player2.actionCounts.lCancelCount.success}`
-                ]
+              // ["Inputs / Minute", data.player1.overall.inputsPerMinute.ratio, data.player2.overall.inputsPerMinute.ratio],
+              // ["Digital Inputs / Minute", data.player1.overall.digitalInputsPerMinute.ratio, data.player2.overall.digitalInputsPerMinute.ratio],
+              // ["L-Cancel Success Rate", 
+                  // `${data.player1.actionCounts.lCancelCount.success} / ${data.player1.actionCounts.lCancelCount.fail + data.player1.actionCounts.lCancelCount.success}`,
+                  // `${data.player2.actionCounts.lCancelCount.success} / ${data.player2.actionCounts.lCancelCount.fail + data.player2.actionCounts.lCancelCount.success}`
+              // ]
             ];
 
-            console.log(table(tableData));
+            console.log(table(tableData).length);
 
+            let embed = new MessageEmbed();
+            embed.setTitle(`${data.player1.name} vs. ${data.player2.name}`);
+            embed.addField("Data Table:", `\`\`\`${table(tableData)}\`\`\``);
+
+            message.reply({embeds: [embed]});
             /*
 
                let gameData = {
