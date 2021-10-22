@@ -14,8 +14,15 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - [ ] Create an about command that describes information about the bot
 - [x] Add license
 - [ ] Potentially implement userinfo command (?)
-- [ ] Finish this readme file with contact information, command information, table of contents, libraries used
+- [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
 - [ ] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell
+
+### Libaries Utilized
+This Discord bot was made with the following Node.js packages
+- [discord-ts](https://discord-ts.js.org/) - A superset of [discord.js](https://discord.js.org/#/) with TypeScript decorators to improve readability
+- [slippi-js](https://github.com/project-slippi/slippi-js) - A JavaScript/TypeScript library for parsing Project Slippi replay files for Super Smash Bros. Melee
+- [table](https://www.npmjs.com/package/table) - Library that simply produces a row-column table with ASCII characters
+- [Axios](https://axios-http.com/) - Promise based HTTP client for Node.js
 
 ### Development
 - `git clone` this repository and navigate into it
