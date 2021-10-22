@@ -42,13 +42,50 @@ export abstract class AppDiscord {
             game = new SlippiGame(value.data);
 
             if (game == null) {
-              console.log("Game is null!")
+              let nullData = new MessageEmbed();
+              nullData.setColor([33, 186, 69]);
+              nullData.setTitle("Error conducting analysis of Slippi replay file");
+              nullData.setDescription("It seems as though an error occurred while trying to get your file. If you want to receive help for this issue, please open an issue on [GitHub](https://github.com/shrianshChari/SlippiStatsBot/issues).");
+
+              message.reply({embeds: [nullData]});
               return;
             }
 
             let data = slpJSON.getDataFromSLP(game);
             if (data == null) {
-              console.log('data is null!');
+              let nullData = new MessageEmbed();
+              nullData.setColor([33, 186, 69]);
+              nullData.setTitle("Error conducting analysis of Slippi replay file");
+              nullData.setDescription("It seems as though an error occurred while trying to get your file. If you want to receive help for this issue, please open an issue on [GitHub](https://github.com/shrianshChari/SlippiStatsBot/issues).");
+
+              message.reply({embeds: [nullData]});
+              return;
+            }
+
+            if (data.gameData.numPlayers > 2) {
+              let tooManyPlayers = new MessageEmbed();
+              tooManyPlayers.setTitle("Number of Players Unsupported");
+              tooManyPlayers.setDescription("Unfortunately, [SlippiStatsBot](https://github.com/shrianshChari/SlippiStatsBot) currently only supports analysis of Slippi replay files of singles matches. This means no replays of doubles or free-for-alls. While support for these games will come in the future, that will require more development. If you wish to see doubles and free-for-alls on SlippiStatsBot, consider contributing on GitHub!");
+              tooManyPlayers.setColor([33, 186, 69]);
+              message.reply({embeds: [tooManyPlayers]});
+              return;
+            }
+
+            if (data.gameData.isTeams) {
+              let tooManyPlayers = new MessageEmbed();
+              tooManyPlayers.setTitle("Teams Games Unsupported");
+              tooManyPlayers.setDescription("Unfortunately, [SlippiStatsBot](https://github.com/shrianshChari/SlippiStatsBot) currently only supports analysis of Slippi replay files of singles matches. This means no replays of doubles or free-for-alls. While support for these games will come in the future, that will require more development. If you wish to see doubles and free-for-alls on SlippiStatsBot, consider contributing on GitHub!");
+              tooManyPlayers.setColor([33, 186, 69]);
+              message.reply({embeds: [tooManyPlayers]});
+              return;
+            }
+
+            if (data.gameData.playableFrameCount == 0) {
+              let noGame = new MessageEmbed();
+              noGame.setTitle("Not a Replay File");
+              noGame.setDescription("It appears the file that you've submitted for analysis doesn't have a replay to analyze. In other words, its length is 0. If you want to receive help for this issue, please open an issue on [GitHub](https://github.com/shrianshChari/SlippiStatsBot/issues).");
+              noGame.setColor([33, 186, 69]);
+              message.reply({embeds: [noGame]});
               return;
             }
 
@@ -109,8 +146,7 @@ export abstract class AppDiscord {
             data.player2.overall.digitalInputsPerMinute.ratio = Math.round(10 * data.player2.overall.digitalInputsPerMinute.ratio) / 10
 
 
-            let tableData = [
-
+            let tableDataOne = [
               ["", data.player1.name, data.player2.name],
               ["Kills", data.player1.overall.killCount, data.player2.overall.killCount],
               ["Damage Done", data.player1.overall.totalDamage, data.player2.overall.totalDamage],
@@ -118,90 +154,107 @@ export abstract class AppDiscord {
               ["Openings / Kill", data.player1.overall.openingsPerKill.ratio, data.player2.overall.openingsPerKill.ratio],
               ["Damage / Opening", data.player1.overall.damagePerOpening.ratio, data.player2.overall.damagePerOpening.ratio],
 
-              // ["Rolls / Air Dodge / Spot Dodge", 
-                // `${data.player1.actionCounts.rollCount} / ${data.player1.actionCounts.airDodgeCount} / ${data.player1.actionCounts.spotDodgeCount}`, 
-                // `${data.player2.actionCounts.rollCount} / ${data.player2.actionCounts.airDodgeCount} / ${data.player2.actionCounts.spotDodgeCount}`],
-
               ["Neutral Wins", data.player1.overall.neutralWinRatio.count, data.player2.overall.neutralWinRatio.count],
               ["Counter Hits", data.player1.overall.counterHitRatio.count, data.player2.overall.counterHitRatio.count],
               ["Beneficial Trades", data.player1.overall.beneficialTradeRatio.count, data.player2.overall.beneficialTradeRatio.count],
-              // ["Wavedash / Waveland / Dash Dance / Ledgegrab", 
-                  // `${data.player1.actionCounts.wavedashCount} / ${data.player1.actionCounts.wavelandCount} / ${data.player1.actionCounts.dashDanceCount} / ${data.player1.actionCounts.ledgegrabCount}`,
-                  // `${data.player2.actionCounts.wavedashCount} / ${data.player2.actionCounts.wavelandCount} / ${data.player2.actionCounts.dashDanceCount} / ${data.player2.actionCounts.ledgegrabCount}`
-              // ],
 
-              // ["Inputs / Minute", data.player1.overall.inputsPerMinute.ratio, data.player2.overall.inputsPerMinute.ratio],
-              // ["Digital Inputs / Minute", data.player1.overall.digitalInputsPerMinute.ratio, data.player2.overall.digitalInputsPerMinute.ratio],
-              // ["L-Cancel Success Rate", 
-                  // `${data.player1.actionCounts.lCancelCount.success} / ${data.player1.actionCounts.lCancelCount.fail + data.player1.actionCounts.lCancelCount.success}`,
-                  // `${data.player2.actionCounts.lCancelCount.success} / ${data.player2.actionCounts.lCancelCount.fail + data.player2.actionCounts.lCancelCount.success}`
-              // ]
             ];
 
-            console.log(table(tableData).length);
+            let tableDataTwo = [
+              ["", data.player1.name, data.player2.name],
+              ["Rolls / Air Dodge / Spot Dodge", 
+                `${data.player1.actionCounts.rollCount} / ${data.player1.actionCounts.airDodgeCount} / ${data.player1.actionCounts.spotDodgeCount}`, 
+                `${data.player2.actionCounts.rollCount} / ${data.player2.actionCounts.airDodgeCount} / ${data.player2.actionCounts.spotDodgeCount}`],
+                ["Wavedash / Waveland / Dash Dance / Ledgegrab", 
+                  `${data.player1.actionCounts.wavedashCount} / ${data.player1.actionCounts.wavelandCount} / ${data.player1.actionCounts.dashDanceCount} / ${data.player1.actionCounts.ledgegrabCount}`,
+                  `${data.player2.actionCounts.wavedashCount} / ${data.player2.actionCounts.wavelandCount} / ${data.player2.actionCounts.dashDanceCount} / ${data.player2.actionCounts.ledgegrabCount}`
+                ],
 
-            let embed = new MessageEmbed();
-            embed.setTitle(`${data.player1.name} vs. ${data.player2.name}`);
-            embed.addField("Data Table:", `\`\`\`${table(tableData)}\`\`\``);
+                ["Inputs / Minute", data.player1.overall.inputsPerMinute.ratio, data.player2.overall.inputsPerMinute.ratio],
+                ["Digital Inputs / Minute", data.player1.overall.digitalInputsPerMinute.ratio, data.player2.overall.digitalInputsPerMinute.ratio],
+                ["L-Cancel Success Rate", 
+                  `${data.player1.actionCounts.lCancelCount.success} / ${data.player1.actionCounts.lCancelCount.fail + data.player1.actionCounts.lCancelCount.success}`,
+                  `${data.player2.actionCounts.lCancelCount.success} / ${data.player2.actionCounts.lCancelCount.fail + data.player2.actionCounts.lCancelCount.success}`
+                ]
+            ]
 
-            message.reply({embeds: [embed]});
-            /*
+            let dateTimeString: string
 
-               let gameData = {
-playedOn: metadata.playedOn
-};
-let player1 = {
-name: "",
-characterID: settings.players[0].characterId,
-colorID: settings.players[0].characterColor
-};
+            if (data.gameData.startAt != null) {
+              let date = data.gameData.startAt;
 
-let player2 = {
-name: "",
-characterID: settings.players[1].characterId,
-colorID: settings.players[1].characterColor
-};
+              const options: Intl.DateTimeFormatOptions = {
+                weekday: 'long', 
+                year: 'numeric', 
+                month: 'long', 
+                day: 'numeric'
+              }
 
-if (metadata.playedOn == 'dolphin') { // On Dolphin
-player1.name = settings.players[0].displayName;
-player2.name = settings.players[1].displayName;
-} else {
-if (settings.players[0].nametag) { // On Console
-player1.name = settings.players[0].nametag;
-} else {
-player1.name = "Player 1";
-}
+              let dateTimeFormat = new Intl.DateTimeFormat('default', options)
 
-if (settings.players[1].nametag) {
-player2.name = settings.players[1].nametag;
-} else {
-player2.name = "Player 2";
-}
-}
+              dateTimeString = date.toUTCString();
+            } else {
+              dateTimeString = "";
+            }
 
+            console.log(dateTimeString);
 
-let information = {};
-             */
+            let gameLength: string;
+            let gameSeconds = (data.gameData.playableFrameCount - data.gameData.playableFrameCount % 60) / 60; // Should now be in seconds
+            let gameMinutes: number;
+            if (gameSeconds > 60) {
+              gameMinutes = (gameSeconds - gameSeconds % 60) / 60; // Now # of minutes in the game
+              gameSeconds -= 60 * gameMinutes;
+            } else {
+              gameMinutes = 0;
+            }
+            
+            let gameHours: number; // Hey, you never know
+            if (gameMinutes > 60) {
+              gameHours = (gameMinutes - gameMinutes % 60) / 60;
+              gameMinutes -= 60 * gameHours;
+            } else {
+              gameHours = 0
+            }
+
+            if (gameHours > 0) {
+
+              gameLength = `${gameHours}:${gameMinutes < 0 ? "0" + gameMinutes : gameMinutes}:${gameSeconds < 0 ? "0" + gameSeconds : gameSeconds}`;
+            } else {
+              gameLength = `${gameMinutes < 0 ? "0" + gameMinutes : gameMinutes}:${gameSeconds < 0 ? "0" + gameSeconds : gameSeconds}`;
+            }
+
+            let summaryDesc = `(${data.player1.characterName}) ${data.player1.name} vs. (${data.player2.characterName}) ${data.player2.name}`;
+            if (dateTimeString) {
+              summaryDesc = summaryDesc + `\n\n**Game Start:** ${dateTimeString}`
+            }
+
+            let gameSummaryEmbed = new MessageEmbed();
+            gameSummaryEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);
+            gameSummaryEmbed.setTitle("Game Summary:");
+            gameSummaryEmbed.setColor([33, 186, 69]);
+            gameSummaryEmbed.addFields(
+              { name: 'Stage', value: data.gameData.stageName, inline: true },
+              { name: 'Platform', value: data.gameData.platform, inline: true },
+              { name: 'Game Length', value: gameLength, inline: true }
+            );
+            gameSummaryEmbed.setDescription(summaryDesc);
+
+            let tableEmbed1 = new MessageEmbed();
+            tableEmbed1.setAuthor(`${data.player1.name} vs. ${data.player2.name}`)
+            tableEmbed1.setTitle("Game Statistics:");
+            tableEmbed1.setDescription(`\`\`\`${table(tableDataOne)}\`\`\``);
+            tableEmbed1.setColor([33, 186, 69]);
+
+            message.reply({embeds: [tableEmbed1]});
+
             return;
           } else {
             console.log("Value.data is not a Buffer!");
-            // console.log(`Value.data is a ${value.data}`);
 
             return;
           }
-          // TODO: Figure out how to resolve this AxiosResponse into an AxiosResponse<ArrayBuffer>
         });
-
-
-        // let slpFilePromise = attachment.attachment;
-        // console.log(slpFilePromise);
-
-
-        // TODO: Continue SlippiGame analysis
-
-
-
-
       }
     });
   }

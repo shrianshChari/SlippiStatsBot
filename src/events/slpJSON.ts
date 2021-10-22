@@ -2,7 +2,8 @@ import { SlippiGame, OverallType, PlayerType, ActionCountsType } from "@slippi/s
 
 export interface SlippiData {
   gameData: {
-    stage: string
+    stageId: number | null
+    stageName: string
     numPlayers: number
     isTeams: boolean
     platform: string
@@ -16,7 +17,8 @@ export interface SlippiData {
 export interface Player {
   name: string
   playerIndex: number
-  character: string
+  characterId: number | null
+  characterName: string
   colorId: number
   overall: OverallType // TODO: implement game and player statistics using getStats().OverallType and getStats.ActionType
   actionCounts: ActionCountsType
@@ -60,7 +62,8 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
     name: getNameFromPlayer(settings.players[0]),
     playerIndex: settings.players[0].playerIndex,
     colorId: settings.players[0].characterColor ? settings.players[0].characterColor : 0,
-    character: getCharFromID(settings.players[0].characterId),
+    characterId: settings.players[0].characterId,
+    characterName: getCharFromID(settings.players[0].characterId),
     overall: stats.overall[0],
     actionCounts: stats.actionCounts[0],
     finalStockCount: stocksRemaining[0]
@@ -70,7 +73,8 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
     name: getNameFromPlayer(settings.players[1]),
     playerIndex: settings.players[1].playerIndex,
     colorId: settings.players[1].characterColor ? settings.players[1].characterColor : 0,
-    character: getCharFromID(settings.players[1].characterId),
+    characterId: settings.players[1].characterId,
+    characterName: getCharFromID(settings.players[1].characterId),
     overall: stats.overall[1],
     actionCounts: stats.actionCounts[1],
     finalStockCount: stocksRemaining[1]
@@ -85,7 +89,8 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
     player1: player1,
     player2: player2,
     gameData: {
-      stage: getStageFromId(settings.stageId),
+      stageId: settings.stageId,
+      stageName: getStageFromId(settings.stageId),
       numPlayers: settings.players.length,
       isTeams: settings.isTeams ? settings.isTeams : false, // Accounts for if isTeams is null
       platform: metadata.playedOn ? metadata.playedOn : "",
