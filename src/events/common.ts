@@ -1,5 +1,5 @@
-import { MessageAttachment, MessageEmbed } from "discord.js";
-import { Discord, On, Client, ArgsOf } from "discordx";
+import { Message, MessageActionRow, MessageAttachment, MessageEmbed, MessageSelectMenu, MessageSelectOption, MessageSelectOptionData, SelectMenuInteraction } from "discord.js";
+import { Discord, On, Client, ArgsOf, SelectMenuComponent } from "discordx";
 
 import { SlippiGame } from "@slippi/slippi-js";
 
@@ -10,8 +10,13 @@ import { table } from 'table';
 import fs from 'fs';
 import * as slpJSON from './slpJSON';
 
+let embedMenu: MessageSelectOptionData[];
+let embeds: {label: string, value: MessageEmbed}[] = [];
+let messageSent: Message | null = null;
+
 @Discord()
 export abstract class AppDiscord {
+
   @On("messageDelete")
   onMessageDelete([message]: ArgsOf<"messageDelete">, client: Client) {
     console.log("Message Deleted", client.user?.username, message.content);
@@ -178,26 +183,22 @@ export abstract class AppDiscord {
                 ]
             ]
 
+            let tableDataTwoOptions = { // The max width of the table on the embed is 56 chars, the borders add 10 chars of padding
+              columns: [
+                { width: 22, wrapWord: true },
+                { width: 12, wrapWord: true },
+                { width: 12, wrapWord: true }
+              ]
+            }
+
             let dateTimeString: string
 
             if (data.gameData.startAt != null) {
               let date = data.gameData.startAt;
-
-              const options: Intl.DateTimeFormatOptions = {
-                weekday: 'long', 
-                year: 'numeric', 
-                month: 'long', 
-                day: 'numeric'
-              }
-
-              let dateTimeFormat = new Intl.DateTimeFormat('default', options)
-
               dateTimeString = date.toUTCString();
             } else {
               dateTimeString = "";
             }
-
-            console.log(dateTimeString);
 
             let gameLength: string;
             let gameSeconds = (data.gameData.playableFrameCount - data.gameData.playableFrameCount % 60) / 60; // Should now be in seconds
@@ -208,7 +209,7 @@ export abstract class AppDiscord {
             } else {
               gameMinutes = 0;
             }
-            
+
             let gameHours: number; // Hey, you never know
             if (gameMinutes > 60) {
               gameHours = (gameMinutes - gameMinutes % 60) / 60;
@@ -219,9 +220,9 @@ export abstract class AppDiscord {
 
             if (gameHours > 0) {
 
-              gameLength = `${gameHours}:${gameMinutes < 0 ? "0" + gameMinutes : gameMinutes}:${gameSeconds < 0 ? "0" + gameSeconds : gameSeconds}`;
+              gameLength = `${gameHours}:${gameMinutes < 10 ? "0" + gameMinutes.toString() : gameMinutes}:${gameSeconds < 10 ? "0" + gameSeconds.toString() : gameSeconds}`;
             } else {
-              gameLength = `${gameMinutes < 0 ? "0" + gameMinutes : gameMinutes}:${gameSeconds < 0 ? "0" + gameSeconds : gameSeconds}`;
+              gameLength = `${gameMinutes}:${gameSeconds < 10 ? "0" + gameSeconds.toString() : gameSeconds}`;
             }
 
             let summaryDesc = `(${data.player1.characterName}) ${data.player1.name} vs. (${data.player2.characterName}) ${data.player2.name}`;
@@ -240,13 +241,35 @@ export abstract class AppDiscord {
             );
             gameSummaryEmbed.setDescription(summaryDesc);
 
-            let tableEmbed1 = new MessageEmbed();
-            tableEmbed1.setAuthor(`${data.player1.name} vs. ${data.player2.name}`)
-            tableEmbed1.setTitle("Game Statistics:");
-            tableEmbed1.setDescription(`\`\`\`${table(tableDataOne)}\`\`\``);
-            tableEmbed1.setColor([33, 186, 69]);
+            let gameStatisticsEmbed = new MessageEmbed();
+            gameStatisticsEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);
+            gameStatisticsEmbed.setTitle("Game Statistics:");
+            gameStatisticsEmbed.setDescription(`\`\`\`${table(tableDataOne)}\`\`\``);
+            gameStatisticsEmbed.setColor([33, 186, 69]);
 
-            message.reply({embeds: [tableEmbed1]});
+            let actionCountsEmbed = new MessageEmbed();
+            actionCountsEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);
+            actionCountsEmbed.setTitle("Action Counts:");
+            actionCountsEmbed.setDescription(`\`\`\`${table(tableDataTwo, tableDataTwoOptions)}\`\`\``);
+            actionCountsEmbed.setColor([33, 186, 69]);
+
+            embedMenu = [ 
+              { label: 'Game Summary', value: 'gameSummaryEmbed' },
+              { label: 'Game Statistics', value: 'gameStatisticsEmbed' },
+              { label: 'Action Counts', value: 'actionCountsEmbed' }
+            ];
+
+            embeds.push({ label: embedMenu[0].value, value: gameSummaryEmbed });
+            embeds.push({ label: embedMenu[1].value, value: gameStatisticsEmbed });
+            embeds.push({ label: embedMenu[2].value, value: actionCountsEmbed });
+
+            const menu = new MessageSelectMenu()
+            .addOptions(embedMenu)
+            .setCustomId("replay-menu")
+
+            const buttonRow = new MessageActionRow().addComponents(menu);
+
+            message.reply({embeds: [gameSummaryEmbed], components: [buttonRow]});
 
             return;
           } else {
@@ -257,5 +280,43 @@ export abstract class AppDiscord {
         });
       }
     });
+  }
+
+  @SelectMenuComponent("replay-menu")
+  private async handle(interaction: SelectMenuInteraction) {
+    await interaction.deferReply();
+
+    const embedValue = interaction.values[0];
+
+    if (!embedValue) {
+      console.log('Not embedValue')
+      return await interaction.followUp("You've provided an invalid page to navigate to, try again.");
+    }
+
+    let embed: MessageEmbed | null = null;
+    for (let i = 0; i < embeds.length; i++) {
+      if (embeds[i].label == embedValue) {
+        embed = embeds[i].value;
+      }
+    }
+
+    if (!embed) {
+      console.log('Not embed')
+      return await interaction.followUp("You've provided an invalid page to navigate to, try again.");
+    }
+
+    const menu = new MessageSelectMenu()
+    .addOptions(embedMenu)
+    .setCustomId("replay-menu")
+
+    const buttonRow = new MessageActionRow().addComponents(menu);
+
+    if (interaction.message instanceof Message) {
+      let message = interaction.message;
+      await message.edit({embeds: [embed], components: [buttonRow]});
+    } else {
+      await interaction.reply({embeds: [embed], components: [buttonRow]});
+    }
+    return await interaction.followUp(`Updated view!`);
   }
 }
