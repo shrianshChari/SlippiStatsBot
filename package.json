@@ -5,8 +5,9 @@
   "main": "build/client.js",
   "scripts": {
     "build": "tsc",
-    "start": "node build/client.js",
-    "dev": "ts-node src/client.ts"
+    "begin": "node build/client.js",
+    "dev": "ts-node src/client.ts",
+    "start": "npm run build && npm run begin"
   },
   "repository": {
     "type": "git",

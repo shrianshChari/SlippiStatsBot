@@ -284,8 +284,6 @@ export abstract class AppDiscord {
 
   @SelectMenuComponent("replay-menu")
   private async handle(interaction: SelectMenuInteraction) {
-    await interaction.deferReply();
-
     const embedValue = interaction.values[0];
 
     if (!embedValue) {
@@ -311,12 +309,8 @@ export abstract class AppDiscord {
 
     const buttonRow = new MessageActionRow().addComponents(menu);
 
-    if (interaction.message instanceof Message) {
-      let message = interaction.message;
-      await message.edit({embeds: [embed], components: [buttonRow]});
-    } else {
-      await interaction.reply({embeds: [embed], components: [buttonRow]});
-    }
-    return await interaction.followUp(`Updated view!`);
+    interaction.update({embeds: [embed]})
+
+    return;
   }
 }
