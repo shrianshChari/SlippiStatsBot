@@ -28,7 +28,7 @@ This Discord bot was made with the following Node.js packages
 ### Development
 - `git clone` this repository and navigate into it
 - `npm install`
-- Create the file `.env` in the root directory and include the line `BOT_TOKEN="<bot-token-id>"` where you replace `<bot-token-id>` with your own from the [Discord developer portal](https://discord.com/developers/).
+- Create the file `.env` in the root directory and include the line `BOT_TOKEN=<bot-token-id>` where you replace `<bot-token-id>` with your own from the [Discord developer portal](https://discord.com/developers/).
 - `npm run build`
 - `npm run start`
 you are done, you will see your bot up and running. For detailed installation guide, please [see this](https://oceanroleplay.github.io/discord.ts/docs/installation)
