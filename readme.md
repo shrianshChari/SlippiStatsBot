@@ -11,7 +11,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 	- [x] Picture of stage to indicate stage played on (taken from the images used in the [Slippi Launcher](https://github.com/project-slippi/slippi-launcher/tree/main/static/images/stages))
 	- [ ] Include link to/txt file of JSON data to be used elsewhere
 	- [ ] Handle exceptions to weird SLP files/replays for Akaneia/BM exclusive content
-- [ ] Create an about command that describes information about the bot
+- [x] Create an about command that describes information about the bot
 - [x] Add license
 - [ ] Potentially implement userinfo command (?)
 - [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
