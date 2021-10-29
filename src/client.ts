@@ -3,6 +3,10 @@ import path from "path";
 import { Intents, Interaction, Message } from "discord.js";
 import { Client } from "discordx";
 
+import { loadEnv, env } from "./env";
+
+loadEnv();
+
 const client = new Client({
   prefix: "!",
   intents: [
@@ -37,4 +41,4 @@ client.on("messageCreate", (message: Message) => {
   client.executeCommand(message);
 });
 
-client.login(process.env.BOT_TOKEN ?? ""); // provide your bot token
+client.login(env.BOT_TOKEN ?? ""); // provide your bot token

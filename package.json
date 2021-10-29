@@ -38,6 +38,7 @@
     "discord.js": "^13.2.0",
     "discordx": "^6.2.0",
     "reflect-metadata": "^0.1.13",
-    "table": "^6.7.2"
+    "table": "^6.7.2",
+    "ts-dotenv": "^0.8.3"
   }
 }

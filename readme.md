@@ -15,7 +15,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - [x] Add license
 - [ ] Potentially implement userinfo command (?)
 - [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
-- [ ] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell (using [ts-dotenv](https://www.npmjs.com/package/ts-dotenv))
+- [x] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell (using [ts-dotenv](https://www.npmjs.com/package/ts-dotenv))
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
@@ -23,12 +23,13 @@ This Discord bot was made with the following Node.js packages
 - [slippi-js](https://github.com/project-slippi/slippi-js) - A JavaScript/TypeScript library for parsing Project Slippi replay files for Super Smash Bros. Melee
 - [table](https://www.npmjs.com/package/table) - Library that simply produces a row-column table with ASCII characters
 - [Axios](https://axios-http.com/) - Promise based HTTP client for Node.js
+- [ts-dotenv](https://www.npmjs.com/package/ts-dotenv) - Library that implements `.env` files to hold the Discord bot's token
 
 ### Development
 - `git clone` this repository and navigate into it
 - `npm install`
+- Create the file `.env` in the root directory and include the line `BOT_TOKEN="<bot-token-id>"` where you replace `<bot-token-id>` with your own from the [Discord developer portal](https://discord.com/developers/).
 - `npm run build`
-- `set BOT_TOKEN=<your bot token>` on Windows or `export BOT_TOKEN=<your bot token>` on UNIX. If you don't have token yet than create one at [discord developer portal](https://discord.com/developers/)
 - `npm run start`
 you are done, you will see your bot up and running. For detailed installation guide, please [see this](https://oceanroleplay.github.io/discord.ts/docs/installation)
 
