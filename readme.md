@@ -8,7 +8,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 	- [ ] Figure out custom stock emojis to display final stock count
 	- [ ] Design final layout of embed to be used
 	- [ ] Flags/arguments to include/not include certain stages
-	- [ ] Picture of stage to indicate stage played on
+	- [x] Picture of stage to indicate stage played on (taken from the images used in the (Slippi Launcher)[https://github.com/project-slippi/slippi-launcher/tree/main/static/images/stages])
 	- [ ] Include link to/txt file of JSON data to be used elsewhere
 	- [ ] Handle exceptions to weird SLP files/replays for Akaneia/BM exclusive content
 - [ ] Create an about command that describes information about the bot

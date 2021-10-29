@@ -3,7 +3,7 @@ import { Discord, On, Client, ArgsOf, SelectMenuComponent } from "discordx";
 
 import { SlippiGame } from "@slippi/slippi-js";
 
-import axios, {AxiosResponse} from "axios";
+import axios, { AxiosResponse } from "axios";
 
 import { table } from 'table';
 
@@ -235,11 +235,15 @@ export abstract class AppDiscord {
             gameSummaryEmbed.setTitle("Game Summary:");
             gameSummaryEmbed.setColor([33, 186, 69]);
             gameSummaryEmbed.addFields(
-              { name: 'Stage', value: data.gameData.stageName, inline: true },
+              { name: 'Stage', value: data.gameData.stage.name, inline: true },
               { name: 'Platform', value: data.gameData.platform, inline: true },
               { name: 'Game Length', value: gameLength, inline: true }
             );
             gameSummaryEmbed.setDescription(summaryDesc);
+            if (data.gameData.stage.id != -1) {
+
+              gameSummaryEmbed.setThumbnail(`https://raw.githubusercontent.com/project-slippi/slippi-launcher/main/static/images/stages/${data.gameData.stage.id}.png`)
+            }
 
             let gameStatisticsEmbed = new MessageEmbed();
             gameStatisticsEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);

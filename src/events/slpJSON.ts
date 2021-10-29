@@ -1,9 +1,8 @@
-import { SlippiGame, OverallType, PlayerType, ActionCountsType } from "@slippi/slippi-js";
+import { SlippiGame, OverallType, PlayerType, ActionCountsType, stages } from "@slippi/slippi-js";
 
 export interface SlippiData {
   gameData: {
-    stageId: number | null
-    stageName: string
+    stage: stages.StageInfo
     numPlayers: number
     isTeams: boolean
     platform: string
@@ -38,6 +37,8 @@ export function getDataFromSLP(slpGame: SlippiGame): SlippiData | null {
 
   let settings = slpGame.getSettings()
   if (settings == null) return null;
+
+
 
   let latestFrame = slpGame.getLatestFrame()
   if (latestFrame == null) return null;
@@ -85,12 +86,14 @@ if (!(latestFrame.players[1]) || !(latestFrame.players[1].post) || !(latestFrame
     metadata.startAt = null
   }
 
+  if (settings.stageId == null)
+    settings.stageId = -1;
+
   data = {
     player1: player1,
     player2: player2,
     gameData: {
-      stageId: settings.stageId,
-      stageName: getStageFromId(settings.stageId),
+      stage: stages.getStageInfo(settings.stageId),
       numPlayers: settings.players.length,
       isTeams: settings.isTeams ? settings.isTeams : false, // Accounts for if isTeams is null
       platform: metadata.playedOn ? metadata.playedOn : "",
