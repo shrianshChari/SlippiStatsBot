@@ -6,16 +6,17 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 	- [x] Get players' names (not connection codes), characters, stage, game length, date and time, and platform (console vs dolphin)
 	- [x] Determine the number of kills each player had, final stock count at the end of the game
 	- [ ] Figure out custom stock emojis to display final stock count
-	- [ ] Design final layout of embed to be used
-	- [ ] Flags/arguments to include/not include certain stages
+	- [x] Design final layout of embed to be used
+	- [ ] ~~Flags/arguments to include/not include certain stages~~
 	- [x] Picture of stage to indicate stage played on (taken from the images used in the [Slippi Launcher](https://github.com/project-slippi/slippi-launcher/tree/main/static/images/stages))
 	- [ ] Include link to/txt file of JSON data to be used elsewhere
-	- [ ] Handle exceptions to weird SLP files/replays for Akaneia/BM exclusive content
+	- [x] Handle exceptions to weird SLP files/replays for Akaneia/BM exclusive content (Unknown character/stage)
 - [x] Create an about command that describes information about the bot
 - [x] Add license
 - [ ] Potentially implement userinfo command (?)
 - [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
 - [x] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell (using [ts-dotenv](https://www.npmjs.com/package/ts-dotenv))
+- [ ] Store embeds long-term with persistent storage (either a local file or a MongoDB database)
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
