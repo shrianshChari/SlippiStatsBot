@@ -5,15 +5,15 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 - [ ] Implement SLP replay analysis (should activate upon the bot being mentioned)
 	- [x] Get players' names (not connection codes), characters, stage, game length, date and time, and platform (console vs dolphin)
 	- [x] Determine the number of kills each player had, final stock count at the end of the game
-	- [ ] Figure out custom stock emojis to display final stock count
+	- [ ] ~~Figure out custom stock emojis to display final stock count~~
 	- [x] Design final layout of embed to be used
 	- [ ] ~~Flags/arguments to include/not include certain stages~~
 	- [x] Picture of stage to indicate stage played on (taken from the images used in the [Slippi Launcher](https://github.com/project-slippi/slippi-launcher/tree/main/static/images/stages))
-	- [ ] Include link to/txt file of JSON data to be used elsewhere
+	- [ ] ~~Include link to/txt file of JSON data to be used elsewhere~~
 	- [x] Handle exceptions to weird SLP files/replays for Akaneia/BM exclusive content (Unknown character/stage)
 - [x] Create an about command that describes information about the bot
 - [x] Add license
-- [ ] Potentially implement userinfo command (?)
+- [ ] ~~Potentially implement userinfo command (?)~~
 - [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
 - [x] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell (using [ts-dotenv](https://www.npmjs.com/package/ts-dotenv))
 - [ ] Store embeds long-term with persistent storage (either a local file or a MongoDB database)
@@ -22,7 +22,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 This Discord bot was made with the following Node.js packages
 - [discord-ts](https://discord-ts.js.org/) - A superset of [discord.js](https://discord.js.org/#/) with TypeScript decorators to improve readability
 - [slippi-js](https://github.com/project-slippi/slippi-js) - A JavaScript/TypeScript library for parsing Project Slippi replay files for Super Smash Bros. Melee
-- [table](https://www.npmjs.com/package/table) - Library that simply produces a row-column table with ASCII characters
+- [table](https://www.npmjs.com/package/table) - Simple library that produces a row-column table with ASCII characters
 - [Axios](https://axios-http.com/) - Promise based HTTP client for Node.js
 - [ts-dotenv](https://www.npmjs.com/package/ts-dotenv) - Library that implements `.env` files to hold the Discord bot's token
 
