@@ -7,11 +7,10 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 
 ### Table of Contents
 
-- [Using SlippiStatsBot]()
-- [Features]()
-- [TODO]()
-- [Libraries Utilized]()
-- [Development]()
+- [Using SlippiStatsBot](https://github.com/shrianshChari/SlippiStatsBot#using-slippistatsbot)
+- [TODO](https://github.com/shrianshChari/SlippiStatsBot#todo)
+- [Libraries Utilized](https://github.com/shrianshChari/SlippiStatsBot#libaries-utilized)
+- [Development](https://github.com/shrianshChari/SlippiStatsBot#development)
 
 ### Using SlippiStatsBot
 
@@ -40,8 +39,6 @@ These commands are slash commands, meaning they are preceded with a `/`.
   - Figure out custom stock emojis to display final stock count
   - Flags/arguments to include/not include certain stages
   - Include link to/txt file of JSON data to be used elsewhere when appropriate flag is activated
-
-- [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
