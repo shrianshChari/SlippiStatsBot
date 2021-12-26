@@ -1,22 +1,47 @@
+![SlippiStatsBot Logo](https://raw.githubusercontent.com/shrianshChari/SlippiStatsBot/master/images/logos/SlippiStats.png)
 # SlippiStatsBot
 A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discord.
+---
+
+------
+
+### Table of Contents
+
+- [Using SlippiStatsBot]()
+- [Features]()
+- [TODO]()
+- [Libraries Utilized]()
+- [Development]()
+
+### Using SlippiStatsBot
+
+To activate Slippi replay file analysis, mention the bot and upload the `.slp` replay file to the message. SlippiStatsBot will then analyze the replay file and display statistics from the game. 
+
+![SLP Analysis](https://github.com/shrianshChari/SlippiStatsBot/blob/master/images/gifs/ReplayUpload.gif?raw=true)
+
+You can select the dropdown to see which set of statistics you want to view.
+
+![Viewing Stats](https://raw.githubusercontent.com/shrianshChari/SlippiStatsBot/master/images/gifs/ChangeEmbed.gif)
+
+#### Other commands
+
+These commands are slash commands, meaning they are preceded with a `/`.
+
+- `about` - displays information about the bot, and links to this repository
+- `ping` - pings the client that is running the bot for its response time
 
 ### TODO
-- [ ] Implement SLP replay analysis (should activate upon the bot being mentioned)
-	- [x] Get players' names (not connection codes), characters, stage, game length, date and time, and platform (console vs dolphin)
-	- [x] Determine the number of kills each player had, final stock count at the end of the game
-	- [ ] ~~Figure out custom stock emojis to display final stock count~~
-	- [x] Design final layout of embed to be used
-	- [ ] ~~Flags/arguments to include/not include certain stages~~
-	- [x] Picture of stage to indicate stage played on (taken from the images used in the [Slippi Launcher](https://github.com/project-slippi/slippi-launcher/tree/main/static/images/stages))
-	- [ ] ~~Include link to/txt file of JSON data to be used elsewhere~~
-	- [x] Handle exceptions to weird SLP files/replays for Akaneia/BM exclusive content (Unknown character/stage)
-- [x] Create an about command that describes information about the bot
-- [x] Add license
-- [ ] ~~Potentially implement userinfo command (?)~~
+
+- High Priority
+  - Store embeds long-term with persistent storage (either a local file or a MongoDB database)
+    - Currently it only holds the embed information of the last analyzed replay file
+  - Fix first GIF (it's really large for no reason)
+- Low Priority
+  - Figure out custom stock emojis to display final stock count
+  - Flags/arguments to include/not include certain stages
+  - Include link to/txt file of JSON data to be used elsewhere when appropriate flag is activated
+
 - [ ] Finish this readme file with contact information, command information, table of contents, ~~libraries used~~
-- [x] Implement usage of a `config.json` or `.env` file instead of having to locally declare it in the shell (using [ts-dotenv](https://www.npmjs.com/package/ts-dotenv))
-- [ ] Store embeds long-term with persistent storage (either a local file or a MongoDB database)
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
