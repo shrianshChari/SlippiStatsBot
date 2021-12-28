@@ -1,4 +1,4 @@
-![SlippiStatsBot Logo](https://raw.githubusercontent.com/shrianshChari/SlippiStatsBot/master/images/logos/SlippiStats.png)
+![SlippiStatsBot Logo](./images/logos/SlippiStats.png)
 # SlippiStatsBot
 A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discord.
 ---
@@ -16,11 +16,11 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 
 To activate Slippi replay file analysis, mention the bot and upload the `.slp` replay file to the message. SlippiStatsBot will then analyze the replay file and display statistics from the game. 
 
-![SLP Analysis](https://github.com/shrianshChari/SlippiStatsBot/blob/master/images/gifs/ReplayUpload.gif?raw=true)
+![SLP Analysis](./images/gifs/ReplayUpload.gif)
 
 You can select the dropdown to see which set of statistics you want to view.
 
-![Viewing Stats](https://raw.githubusercontent.com/shrianshChari/SlippiStatsBot/master/images/gifs/ChangeEmbed.gif)
+![Viewing Stats](./images/gifs/ChangeEmbed.gif)
 
 #### Other commands
 
