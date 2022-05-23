@@ -1,4 +1,5 @@
-build
+build/
+data/
 node_modules
 yarn.lock
 .env
