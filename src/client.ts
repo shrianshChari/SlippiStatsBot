@@ -3,9 +3,15 @@ import path from "path";
 import { Intents, Interaction, Message } from "discord.js";
 import { Client } from "discordx";
 
+import * as fs from 'fs';
+
 import { loadEnv, env } from "./env";
 
 loadEnv();
+
+fs.mkdir('data', { recursive: true }, (err) => {
+  console.log('Was unable to create data folder. Either it already exists or I cannot create directories.')
+});
 
 const client = new Client({
   prefix: "!",

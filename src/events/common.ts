@@ -9,10 +9,7 @@ import { table } from 'table';
 
 import fs from 'fs';
 import * as slpJSON from './slpJSON';
-
-let embedMenu: MessageSelectOptionData[];
-let embeds: {label: string, value: MessageEmbed}[] = [];
-let messageSent: Message | null = null;
+import {inputData, nextDefaultValue, outputData, ReplayEmbedData} from "./files";
 
 @Discord()
 export abstract class AppDiscord {
@@ -231,7 +228,7 @@ export abstract class AppDiscord {
             }
 
             let gameSummaryEmbed = new MessageEmbed();
-            gameSummaryEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);
+            gameSummaryEmbed.setAuthor({ name: `${data.player1.name} vs. ${data.player2.name}` });
             gameSummaryEmbed.setTitle("Game Summary:");
             gameSummaryEmbed.setColor([33, 186, 69]);
             gameSummaryEmbed.addFields(
@@ -246,37 +243,71 @@ export abstract class AppDiscord {
               gameSummaryEmbed.setThumbnail(`https://raw.githubusercontent.com/project-slippi/slippi-launcher/main/static/images/stages/${data.gameData.stage.id}.png`)
             }
 
-            let gameStatisticsEmbed = new MessageEmbed();
-            gameStatisticsEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);
-            gameStatisticsEmbed.setTitle("Game Statistics:");
-            gameStatisticsEmbed.setDescription(`\`\`\`${table(tableDataOne)}\`\`\``);
-            gameStatisticsEmbed.setColor([33, 186, 69]);
+              let gameStatisticsEmbed = new MessageEmbed();
+              gameStatisticsEmbed.setAuthor({ name: `${data.player1.name} vs. ${data.player2.name}` });
+              gameStatisticsEmbed.setTitle("Game Statistics:");
+              gameStatisticsEmbed.setDescription(`\`\`\`${table(tableDataOne)}\`\`\``);
+              gameStatisticsEmbed.setColor([33, 186, 69]);
 
-            let actionCountsEmbed = new MessageEmbed();
-            actionCountsEmbed.setAuthor(`${data.player1.name} vs. ${data.player2.name}`);
-            actionCountsEmbed.setTitle("Action Counts:");
-            actionCountsEmbed.setDescription(`\`\`\`${table(tableDataTwo, tableDataTwoOptions)}\`\`\``);
-            actionCountsEmbed.setColor([33, 186, 69]);
+              let actionCountsEmbed = new MessageEmbed();
+              actionCountsEmbed.setAuthor({ name: `${data.player1.name} vs. ${data.player2.name}` });
+              actionCountsEmbed.setTitle("Action Counts:");
+              actionCountsEmbed.setDescription(`\`\`\`${table(tableDataTwo, tableDataTwoOptions)}\`\`\``);
+              actionCountsEmbed.setColor([33, 186, 69]);
 
-            embedMenu = [ 
-              { label: 'Game Summary', value: 'gameSummaryEmbed' },
-              { label: 'Game Statistics', value: 'gameStatisticsEmbed' },
-              { label: 'Action Counts', value: 'actionCountsEmbed' }
-            ];
 
-            embeds.push({ label: embedMenu[0].value, value: gameSummaryEmbed });
-            embeds.push({ label: embedMenu[1].value, value: gameStatisticsEmbed });
-            embeds.push({ label: embedMenu[2].value, value: actionCountsEmbed });
 
-            const menu = new MessageSelectMenu()
-            .addOptions(embedMenu)
-            .setCustomId("replay-menu")
+              let embedMenu = [ 
+                { label: 'Game Summary', value: 'gameSummaryEmbed' },
+                { label: 'Game Statistics', value: 'gameStatisticsEmbed' },
+                { label: 'Action Counts', value: 'actionCountsEmbed' }
+              ];
 
-            const buttonRow = new MessageActionRow().addComponents(menu);
+              let embeds: { label: string, value: MessageEmbed }[] = []; 
 
-            message.reply({embeds: [gameSummaryEmbed], components: [buttonRow]});
+              embeds.push({ label: embedMenu[0].value, value: gameSummaryEmbed });
+              embeds.push({ label: embedMenu[1].value, value: gameStatisticsEmbed });
+              embeds.push({ label: embedMenu[2].value, value: actionCountsEmbed });
 
-            return;
+              const menu = new MessageSelectMenu()
+              .addOptions(embedMenu)
+              .setCustomId("replay-menu")
+
+              const buttonRow = new MessageActionRow().addComponents(menu);
+
+              message.reply({embeds: [gameSummaryEmbed], components: [buttonRow]})
+              .then((reply: Message<boolean>) => {
+
+                /* TODO
+                 * There is a bug here 
+                 */
+
+                let messageId: string = "";
+
+                if (reply && reply.reference && reply.reference.messageId) {
+                  messageId = reply.reference.messageId;
+                } else {
+                  messageId = nextDefaultValue();
+                }
+
+                console.log(reply.reference)
+
+                if (!message.guildId) {
+                  message.guildId = "";
+                }
+
+                let messageData: ReplayEmbedData = {
+                  embedMenu: embedMenu,
+                  embeds: embeds,
+                  guildId: message.guildId,
+                  messageId: messageId
+                }
+
+                outputData(messageData);
+              });
+
+
+              return;
           } else {
             console.log("Value.data is not a Buffer!");
 
@@ -291,30 +322,35 @@ export abstract class AppDiscord {
   private async handle(interaction: SelectMenuInteraction) {
     const embedValue = interaction.values[0];
 
-    if (!embedValue) {
+    if (interaction.guildId === null) {
+      interaction.guildId = ""
+    }
+
+    let ourData = inputData(interaction.guildId, interaction.message.id);
+    let embed: MessageEmbed | null = null;
+
+    if (ourData) {
+      for (let i = 0; i < ourData.embeds.length; i++) {
+        if (ourData.embeds[i].label == embedValue) {
+          embed = ourData.embeds[i].value;
+        }
+      }
+
+      if (embed) {
+        const menu = new MessageSelectMenu()
+        .addOptions(ourData.embedMenu)
+        .setCustomId("replay-menu")
+
+        const buttonRow = new MessageActionRow().addComponents(menu);
+
+        interaction.update({embeds: [embed]})
+      }
+
+    } else {
       console.log('Not embedValue')
       return await interaction.followUp("You've provided an invalid page to navigate to, try again.");
+
     }
-
-    let embed: MessageEmbed | null = null;
-    for (let i = 0; i < embeds.length; i++) {
-      if (embeds[i].label == embedValue) {
-        embed = embeds[i].value;
-      }
-    }
-
-    if (!embed) {
-      console.log('Not embed')
-      return await interaction.followUp("You've provided an invalid page to navigate to, try again.");
-    }
-
-    const menu = new MessageSelectMenu()
-    .addOptions(embedMenu)
-    .setCustomId("replay-menu")
-
-    const buttonRow = new MessageActionRow().addComponents(menu);
-
-    interaction.update({embeds: [embed]})
 
     return;
   }
