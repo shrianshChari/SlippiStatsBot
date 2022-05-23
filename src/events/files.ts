@@ -31,17 +31,9 @@ export function outputData(input: ReplayEmbedData): void {
 
 export function nextDefaultValue(): string {
   let val = 0;
-  let exists: boolean;
-  do {
-    exists = false;
-    try {
-      let fileExists = fs.openSync(`${folder}/default/${val}.json`, 'r+');
-      exists = true;
-      val++;
-    } catch (err) {
-      exists = false;
-    }
-  } while (exists);
+  while (fs.existsSync(`./${folder}/default/${val}.json`)) {
+    val++;
+  }
   return val.toString();
 }
 
