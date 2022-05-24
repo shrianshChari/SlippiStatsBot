@@ -32,13 +32,13 @@ These commands are slash commands, meaning they are preceded with a `/`.
 ### TODO
 
 - High Priority
-  - Store embeds long-term with persistent storage (either a local file or a MongoDB database)
-    - Currently it only holds the embed information of the last analyzed replay file
-  - Fix first GIF (it's really large for no reason)
+  - If the user empty pings the bot (pings w/o a Slippi file or any other message content), remind them to upload a SLP file with a friendly wave
+  - Grab all of the images in the [slippi-launcher repo](https://github.com/project-slippi/slippi-launcher/tree/main/src/renderer/styles/images/stages) and put them into a repo that I can easily grab from
 - Low Priority
   - Figure out custom stock emojis to display final stock count
   - Flags/arguments to include/not include certain stages
   - Include link to/txt file of JSON data to be used elsewhere when appropriate flag is activated
+  - Fix/replace first GIF (it's really large for no reason)
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
