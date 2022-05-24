@@ -19,7 +19,7 @@ export interface Player {
   characterId: number | null
   characterName: string
   colorId: number
-  overall: OverallType // TODO: implement game and player statistics using getStats().OverallType and getStats.ActionType
+  overall: OverallType
   actionCounts: ActionCountsType
   finalStockCount: number
 }

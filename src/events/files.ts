@@ -11,7 +11,7 @@ export interface ReplayEmbedData {
 }
 
 export function outputData(input: ReplayEmbedData): void {
-  console.log(`guildId: ${input.guildId}, messageId: ${input.messageId}`)
+  // console.log(`guildId: ${input.guildId}, messageId: ${input.messageId}`)
   try {
     let filepath;
     if (input.guildId.length > 0 && input.messageId.length > 0) {
@@ -21,7 +21,7 @@ export function outputData(input: ReplayEmbedData): void {
       fs.mkdirSync(`./${folder}/default`, { recursive: true })
       filepath = `./${folder}/default/${nextDefaultValue()}.json`;
     }
-    console.log(filepath)
+    // console.log(filepath)
     fs.writeFileSync(filepath, JSON.stringify(input));
   } catch (error) {
     console.error(error)
@@ -47,8 +47,8 @@ export function inputData(guildId: string, messageId: string): ReplayEmbedData |
   } else {
     fileURL = `./${folder}/${guildId}/${messageId}.json`;
   }
-  console.log(`guildID: ${guildId}, messageId: ${messageId}`)
-  console.log(`fileURL: ${fileURL}`)
+  // console.log(`guildID: ${guildId}, messageId: ${messageId}`)
+  // console.log(`fileURL: ${fileURL}`)
   dataBuff = fs.readFileSync(fileURL);
   data = JSON.parse(dataBuff.toString('utf8'));
   // Checks for the integrity of the data

@@ -7,9 +7,8 @@ import axios, { AxiosResponse } from "axios";
 
 import { table } from 'table';
 
-import fs from 'fs';
 import * as slpJSON from './slpJSON';
-import {inputData, nextDefaultValue, outputData, ReplayEmbedData} from "./files";
+import {inputData, outputData, ReplayEmbedData} from "./files";
 
 @Discord()
 export abstract class AppDiscord {
@@ -278,19 +277,9 @@ export abstract class AppDiscord {
               message.reply({embeds: [gameSummaryEmbed], components: [buttonRow]})
               .then((reply: Message<boolean>) => {
 
-                /* TODO
-                 * There is a bug here 
-                 */
+                let messageId = reply.id;
 
-                let messageId: string = "";
-
-                if (reply && reply.reference && reply.reference.messageId) {
-                  messageId = reply.reference.messageId;
-                } else {
-                  messageId = nextDefaultValue();
-                }
-
-                console.log(reply.reference)
+                // console.log(reply.id)
 
                 if (!message.guildId) {
                   message.guildId = "";
