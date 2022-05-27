@@ -33,7 +33,6 @@ These commands are slash commands, meaning they are preceded with a `/`.
 
 - High Priority
   - If the user empty pings the bot (pings w/o a Slippi file or any other message content), remind them to upload a SLP file with a friendly wave
-  - Grab all of the images in the [slippi-launcher repo](https://github.com/project-slippi/slippi-launcher/tree/main/src/renderer/styles/images/stages) and put them into a repo that I can easily grab from
 - Low Priority
   - Figure out custom stock emojis to display final stock count
   - Flags/arguments to include/not include certain stages
@@ -47,6 +46,7 @@ This Discord bot was made with the following Node.js packages
 - [table](https://www.npmjs.com/package/table) - Simple library that produces a row-column table with ASCII characters
 - [Axios](https://axios-http.com/) - Promise based HTTP client for Node.js
 - [ts-dotenv](https://www.npmjs.com/package/ts-dotenv) - Library that implements `.env` files to hold the Discord bot's token
+- [lodash](https://lodash.com/) - JS Utility Library
 
 ### Development
 - `git clone` this repository and navigate into it
