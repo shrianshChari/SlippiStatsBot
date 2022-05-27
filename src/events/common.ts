@@ -239,7 +239,7 @@ export abstract class AppDiscord {
             if (data.gameData.stage.id != -1) {
               // I would love to have the files downloaded locally, but I have to have the files somewhere on the Internet with a direct link to it.
               // Thus, I'll just use the one from the Project Slippi GitHub
-              gameSummaryEmbed.setThumbnail(`https://raw.githubusercontent.com/shrianshChari/slippi-stage-imgs/main/${data.gameData.stage.id}.png`)
+              gameSummaryEmbed.setThumbnail(`https://raw.githubusercontent.com/shrianshChari/slippi-stage-imgs/main/img/${data.gameData.stage.id}.png`)
             }
 
               let gameStatisticsEmbed = new MessageEmbed();
