@@ -22,7 +22,7 @@ export function outputData(input: ReplayEmbedData): void {
       filepath = `./${folder}/default/${nextDefaultValue()}.json`;
     }
     // console.log(filepath)
-    fs.writeFileSync(filepath, JSON.stringify(input));
+    fs.writeFileSync(filepath, JSON.stringify(input), null, '\t');
   } catch (error) {
     console.error(error)
     console.log('An error occurred when writing file output.')
