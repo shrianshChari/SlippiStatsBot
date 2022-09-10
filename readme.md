@@ -33,11 +33,10 @@ These commands are slash commands, meaning they are preceded with a `/`.
 
 - High Priority
   - Update GIFs to make use of the fact that bot now uses slash commands
-  - Move file storage to a database like MongoDB
+  - Move file storage to a database like MongoDB (as opposed to local file storage)
 - Low Priority
-  - Figure out custom stock emojis to display final stock count
-  - Flags/arguments to include/not include certain stages
   - Include link to/txt file of JSON data to be used elsewhere when appropriate flag is activated
+  - Put the replay analysis into a new thread instead of the chat
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
