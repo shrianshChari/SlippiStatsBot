@@ -14,7 +14,7 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 
 ### Using SlippiStatsBot
 
-To activate Slippi replay file analysis, mention the bot and upload the `.slp` replay file to the message. SlippiStatsBot will then analyze the replay file and display statistics from the game. 
+To activate Slippi replay file analysis, call `/analyze` upload the `.slp` replay file to the message. SlippiStatsBot will then analyze the replay file and display statistics from the game. 
 
 ![SLP Analysis](./images/gifs/ReplayUpload.gif)
 
@@ -32,16 +32,16 @@ These commands are slash commands, meaning they are preceded with a `/`.
 ### TODO
 
 - High Priority
-  - If the user empty pings the bot (pings w/o a Slippi file or any other message content), remind them to upload a SLP file with a friendly wave
+  - Update GIFs to make use of the fact that bot now uses slash commands
+  - Move file storage to a database like MongoDB
 - Low Priority
   - Figure out custom stock emojis to display final stock count
   - Flags/arguments to include/not include certain stages
   - Include link to/txt file of JSON data to be used elsewhere when appropriate flag is activated
-  - Fix/replace first GIF (it's really large for no reason)
 
 ### Libaries Utilized
 This Discord bot was made with the following Node.js packages
-- [discord-ts](https://discord-ts.js.org/) - A superset of [discord.js](https://discord.js.org/#/) with TypeScript decorators to improve readability
+- [discord-ts](https://discordx.js.org/) - A superset of [discord.js](https://discord.js.org/#/) with TypeScript decorators to improve readability
 - [slippi-js](https://github.com/project-slippi/slippi-js) - A JavaScript/TypeScript library for parsing Project Slippi replay files for Super Smash Bros. Melee
 - [table](https://www.npmjs.com/package/table) - Simple library that produces a row-column table with ASCII characters
 - [Axios](https://axios-http.com/) - Promise based HTTP client for Node.js
@@ -54,5 +54,5 @@ This Discord bot was made with the following Node.js packages
 - Create the file `.env` in the root directory and include the line `BOT_TOKEN=<bot-token-id>` where you replace `<bot-token-id>` with your own from the [Discord developer portal](https://discord.com/developers/).
 - `npm run build`
 - `npm run start`
-you are done, you will see your bot up and running. For detailed installation guide, please [see this](https://oceanroleplay.github.io/discord.ts/docs/installation)
+you are done, you will see your bot up and running. For detailed installation guide, please [see this](https://discordx.js.org/docs/discordx/getting-started)
 

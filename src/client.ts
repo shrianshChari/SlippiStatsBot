@@ -1,7 +1,7 @@
 import "reflect-metadata";
-import path from "path";
-import { Intents, Interaction, Message } from "discord.js";
+import { Interaction, Message, IntentsBitField } from "discord.js";
 import { Client } from "discordx";
+import { dirname, importx, isESM } from "@discordx/importer";
 
 import * as fs from 'fs';
 
@@ -14,27 +14,19 @@ fs.mkdir('data', { recursive: true }, (err) => {
 });
 
 const client = new Client({
-  prefix: "!",
   intents: [
-    Intents.FLAGS.GUILDS,
-    Intents.FLAGS.GUILD_MESSAGES,
-    Intents.FLAGS.GUILD_MESSAGE_REACTIONS,
-    Intents.FLAGS.GUILD_VOICE_STATES,
-  ],
-  classes: [
-    path.join(__dirname, "commands", "**/*.{ts,js}"),
-    path.join(__dirname, "events", "**/*.{ts,js}"),
+    IntentsBitField.Flags.Guilds,
+    IntentsBitField.Flags.GuildMessages,
+    IntentsBitField.Flags.GuildMessageReactions,
   ],
   botGuilds: [(client) => client.guilds.cache.map((guild) => guild.id)],
   silent: true,
 });
 
 client.once("ready", async () => {
-  await client.initApplicationCommands({
-    guild: { log: true },
-    global: { log: true },
-  });
-  await client.initApplicationPermissions();
+  await client.guilds.fetch()
+
+  await client.initApplicationCommands();
 
   console.log("Bot started");
 });
@@ -47,4 +39,15 @@ client.on("messageCreate", (message: Message) => {
   client.executeCommand(message);
 });
 
-client.login(env.BOT_TOKEN ?? ""); // provide your bot token
+async function run() {
+  await importx(`${__dirname}/{commands,events}/**.{ts,js}`)
+    .then(() => {
+      console.log(`${__dirname}`);
+      
+      console.log('All commands imported!')
+    })
+
+  client.login(env.BOT_TOKEN ?? ""); // provide your bot token
+}
+
+run();

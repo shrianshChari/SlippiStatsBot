@@ -1,17 +1,17 @@
-import { MessageEmbed, MessageSelectOptionData} from "discord.js"
+import { EmbedBuilder, SelectMenuOptionBuilder} from "discord.js"
 import * as fs from 'fs';
 
 let folder = 'data';
 
 export interface ReplayEmbedData {
-  embedMenu: MessageSelectOptionData[],
-  embeds: { label: string, value: MessageEmbed }[],
+  embedMenu: SelectMenuOptionBuilder[],
+  embeds: { label: string, value: EmbedBuilder }[],
   guildId: string,
   messageId: string
 }
 
 export function outputData(input: ReplayEmbedData): void {
-  // console.log(`guildId: ${input.guildId}, messageId: ${input.messageId}`)
+  console.log(`guildId: ${input.guildId}, messageId: ${input.messageId}`)
   try {
     let filepath;
     if (input.guildId.length > 0 && input.messageId.length > 0) {
@@ -22,7 +22,7 @@ export function outputData(input: ReplayEmbedData): void {
       filepath = `./${folder}/default/${nextDefaultValue()}.json`;
     }
     // console.log(filepath)
-    fs.writeFileSync(filepath, JSON.stringify(input), null, '\t');
+    fs.writeFileSync(filepath, JSON.stringify(input, null, '\t'));
   } catch (error) {
     console.error(error)
     console.log('An error occurred when writing file output.')
