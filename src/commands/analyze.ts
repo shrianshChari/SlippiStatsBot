@@ -294,7 +294,6 @@ class Analyze {
 
         interaction.reply(
           {
-            content: "Analysis",
             embeds: [gameSummaryEmbed],
             components: [buttonRow],
             fetchReply: true,
