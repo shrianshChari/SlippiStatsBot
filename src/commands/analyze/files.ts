@@ -11,7 +11,7 @@ export interface ReplayEmbedData {
 }
 
 export function outputData(input: ReplayEmbedData): void {
-  console.log(`guildId: ${input.guildId}, messageId: ${input.messageId}`)
+  // console.log(`guildId: ${input.guildId}, messageId: ${input.messageId}`)
   try {
     let filepath;
     if (input.guildId.length > 0 && input.messageId.length > 0) {
