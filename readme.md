@@ -7,10 +7,11 @@ A Discord bot dedicated to analysis of Project Slippi SLP replay files on Discor
 
 ### Table of Contents
 
-- [Using SlippiStatsBot](https://github.com/shrianshChari/SlippiStatsBot#using-slippistatsbot)
-- [TODO](https://github.com/shrianshChari/SlippiStatsBot#todo)
-- [Libraries Utilized](https://github.com/shrianshChari/SlippiStatsBot#libaries-utilized)
-- [Development](https://github.com/shrianshChari/SlippiStatsBot#development)
+- [Using SlippiStatsBot](#using-slippistatsbot)
+- [Can I use this in my server?](#can-i-use-this-in-my-server)
+- [TODO](#todo)
+- [Libraries Utilized](#libaries-utilized)
+- [Development](#development)
 
 ### Using SlippiStatsBot
 
@@ -29,10 +30,15 @@ These commands are slash commands, meaning they are preceded with a `/`.
 - `about` - displays information about the bot, and links to this repository
 - `ping` - pings the client that is running the bot for its response time
 
+### Can I use this in my server?
+
+Currently, this Discord bot isn't being hosted anywhere, so the bot is currently offline. Should I choose to host this bot in the future (whenever it may be), I will make preparations to make it available to people, including an invite link and a way to generate funds to keep this thing online.
+
+You could also run this thing locally, and for that you might want to go down to [Development](#development) for help on how to get up and running.
+
 ### TODO
 
 - High Priority
-  - Update GIFs to make use of the fact that bot now uses slash commands
   - Move file storage to a database like MongoDB (as opposed to local file storage)
 - Low Priority
   - Include link to/txt file of JSON data to be used elsewhere when appropriate flag is activated
